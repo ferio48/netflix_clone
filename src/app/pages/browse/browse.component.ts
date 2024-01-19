@@ -50,28 +50,33 @@ export class BrowseComponent implements OnInit{
   ];
 
   ngOnInit(): void {
-    console.warn(this.movieService.getMovies());
+    this.movieService.getMovies()
+    .subscribe((res) => {
+      console.warn(res)
+    });
     forkJoin(this.sources)
     .pipe(
       map(([movies, tvShows, ratedMovies, nowPlaying, upcoming, popular, topRated]) => {
         this.bannerDetails = this.movieService.getBannerDetail(movies.results[0].id);
         this.bannerVideo = this.movieService.getBannerVideo(movies.results[0].id);
+        console.warn(movies.results[0].id);
         // create a property to store all the above information
         return {movies, tvShows, ratedMovies, nowPlaying, upcoming, popular, topRated};
       })
-    ).subscribe((res: any) => {
-      this.movies = res.movies.results as IVideoContent[];
-      this.tvShows = res.tvShows.results as IVideoContent[];
-      this.ratedMovies = res.ratedMovies.results as IVideoContent[];
-      this.nowPlayingMovies = res.nowPlaying.results as IVideoContent[];
-      this.upcomingMovies = res.upcoming.results as IVideoContent[];
-      this.popularMovies = res.popular.results as IVideoContent[];
-      this.topRatedMovies = res.topRated.results as IVideoContent[];
-    })
+      ).subscribe((res: any) => {
+        this.movies = res.movies.results as IVideoContent[];
+        this.tvShows = res.tvShows.results as IVideoContent[];
+        this.ratedMovies = res.ratedMovies.results as IVideoContent[];
+        this.nowPlayingMovies = res.nowPlaying.results as IVideoContent[];
+        this.upcomingMovies = res.upcoming.results as IVideoContent[];
+        this.popularMovies = res.popular.results as IVideoContent[];
+        this.topRatedMovies = res.topRated.results as IVideoContent[];
+      })
+      
   }
 
   signOut() {
-    console.warn(sessionStorage.getItem("loggedInUser"));
+    // console.warn(sessionStorage.getItem("loggedInUser"));
     sessionStorage.removeItem("loggedInUser");
     // console.warn(sessionStorage.getItem("loggedInUser"));
     this.auth.signOut();

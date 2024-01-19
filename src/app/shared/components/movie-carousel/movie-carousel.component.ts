@@ -21,6 +21,7 @@ import { transition, trigger, style, animate } from '@angular/animations';
     ])
   ]
 })
+
 export class MovieCarouselComponent implements OnInit, AfterViewInit {
   @Input() videoContents: IVideoContent[] = [];
   @Input() title!: string;
